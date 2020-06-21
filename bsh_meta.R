@@ -1,11 +1,24 @@
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
 
-library("keggrest")
+BiocManager::install("KEGGREST")
+
+library("KEGGREST")
 library(Biostrings)
-for (i in 1:length(bsh_vector)){
-  test.seq<-keggGet(bsh_vector[i],"ntseq") # got the gene list from KEGG_enzyme3.5.1.24
-  name <- paste(gsub(":","_",c(bsh_vector[i])),".fa",sep="")
-  writeXStringSet(test.seq, name, format = "fasta")
+
+gene_list <- keggFind("genes", "K20038")
+# mode(gene_list)
+# [1] "character"
+# str(gene_list[1])
+# Named chr "uncharacterized protein LOC111685019" # check the structure
+# - attr(*, "names")= chr "lcq:111685019"
+
+for (i in 1:length(gene_list)){
+  gene_seq<-keggGet(gene_list[i],"ntseq") 
+  filename <- paste(gsub(":","_",c(gene_list[i])),".fa",sep="") # gsub pattern matching and replacement
+  writeXStringSet(gene_seq, filename, format = "fasta")
 }
+
 
 library("openxlsx")
 library("ggplot2")
