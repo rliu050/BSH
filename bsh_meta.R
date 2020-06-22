@@ -6,7 +6,8 @@ BiocManager::install("KEGGREST")
 library("KEGGREST")
 library(Biostrings)
 
-gene_list <- keggFind("genes", "K20038")
+gene_info <- keggFind("genes", "K20038")
+gene_list <- names(gene_info)
 # mode(gene_list)
 # [1] "character"
 # str(gene_list[1])
