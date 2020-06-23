@@ -20,6 +20,14 @@ for (i in 1:length(gene_list)){
   writeXStringSet(gene_seq, filename, format = "fasta")
 }
 
+```cmd try default db
+makeblastdb -in bsh_genes.fa -title "BSHGENE" -dbtype nucl
+for file in *.fasta; do blastn -query $file -db ../../bsh_genes.fa -evalue 0.00001 -outfmt 7 -out $file.BLASTN.tab; done
+for file in *.BLASTN.tab; do echo $file >>bsh_counts.txt; grep -c "Fields" $file >>bsh_counts.txt; done
+for file in *.fasta; do echo $file >>total_reads.txt; grep -c ">" $file >>total_reads.txt; done
+for file in *.tab; do echo $file >> CN_layases_counts.txt; grep -c "Fields" $file >> CN_layases.txt;done
+for file in *.tab; do echo $file > $file.txt; grep "Fields" -A 11 $file >> $file.txt;done
+```
 
 library("openxlsx")
 library("ggplot2")
